@@ -22,82 +22,76 @@ exports.CreateProfile = async (req, res) => {
 };
 
 //login user
+// const bcrypt=require('bcrypt');
 exports.UserLogin = async (req, res) => {
-  try {
-
-    let userName = req.body.userName;
-    let password = req.body.password;
-
-    const data = await ProfileModel.find({
-      userName: userName,
-      Password: password,
-    });
-
-    if (data.length && data) {
-
-      //create auth token
-      let payLoad={
-        exp: Math.floor(Date.now()/1000)+(24*60*60),
-        data:0,
+    try {
+      let userName = req.body.userName;
+      let password = req.body.password;  // Ensure password is being received correctly
+  
+      const data = await ProfileModel.find({
+        userName: userName,
+        Password: password,  // Ensure this matches your database field name
+      });
+  
+      if (data.length && data) {
+        // Create auth token
+        let payLoad = {
+          exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60),
+          data: {
+            userName: userName,
+          },
+        };
+        
+        let token = jwt.sign(payLoad, 'secret12345');
+  
+        res.status(200).json({
+          status: "success",
+          token: token,
+          data: data,
+        });
+      } else {
+        res.status(401).json({
+          status: "fail",
+          message: "Invalid username or password",
+        });
       }
-      let token=jwt.sign(payLoad,'secret12345')
-
-      res.status(200).json({
-        status: "success",
-        token:token,
-        data: data,
-      });
-
-    } else {
-
-      res.status(401).json({
+    } catch (err) {
+      res.status(404).json({
         status: "fail",
-        message: "Invalid username or password",
+        data: err.message,
       });
-
     }
-  } catch (err) {
-
-    res.status(404).json({
-      status: "fail",
-      data: err.message,
-    });
-
-  }
 };
+  
 
 
 //select profile
 exports.SelectProfile = async (req, res) => {
-  try {
-
-    let userName = req.body.userName;
-
-    const data = await ProfileModel.findOne({
-      userName: userName,
-    });
-
-    if ( data) {
-
-      res.status(400).json({
-        status: "unauthorized",
-        data: data,
+    try {
+      const userName = req.user.data.userName; // Ensure this is correct
+      console.log("Username from Token:", userName); // Log the username
+  
+      const data = await ProfileModel.findOne({
+        userName: userName,
       });
-
-    } else {
-
-      res.status(200).json({
-        status: "success",
-        data:data,
+  
+      if (data) {
+        res.status(200).json({
+          status: "success",
+          data: data,
+        });
+      } else {
+        res.status(404).json({
+          status: "fail",
+          message: "User not found",
+        });
+      }
+    } catch (err) {
+      res.status(500).json({
+        status: "fail",
+        message: err.message,
       });
-
     }
-  } catch (err) {
-
-    res.status(404).json({
-      status: "fail",
-      data: err.message,
-    });
-
-  }
-};
+  };
+   
+  
