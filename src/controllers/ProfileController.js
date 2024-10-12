@@ -65,3 +65,39 @@ exports.UserLogin = async (req, res) => {
 
   }
 };
+
+
+//select profile
+exports.SelectProfile = async (req, res) => {
+  try {
+
+    let userName = req.body.userName;
+
+    const data = await ProfileModel.findOne({
+      userName: userName,
+    });
+
+    if ( data) {
+
+      res.status(400).json({
+        status: "unauthorized",
+        data: data,
+      });
+
+    } else {
+
+      res.status(200).json({
+        status: "success",
+        data:data,
+      });
+
+    }
+  } catch (err) {
+
+    res.status(404).json({
+      status: "fail",
+      data: err.message,
+    });
+
+  }
+};
