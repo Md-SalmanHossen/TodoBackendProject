@@ -5,5 +5,6 @@ const router = express.Router();
 
 // profile create
 router.post('/CreateProfile', ProfileController.CreateProfile);
+router.post('/UserLogin',ProfileController.UserLogin);
 
 module.exports = router;
