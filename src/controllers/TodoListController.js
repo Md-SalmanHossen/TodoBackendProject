@@ -107,7 +107,7 @@ exports.UpdateToDo = async (req, res) => {
 };
 
 // update status
-exports.UpdateToDo = async (req, res) => {
+exports.UpdateToDoStatus = async (req, res) => {
   try {
 
     let ToDoStatus = req.body.ToDoStatus;
