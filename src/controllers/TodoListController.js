@@ -37,7 +37,7 @@ exports.CreateToDoList = async (req, res) => {
   }
 };
 
-//read todo
+//select todo for read
 exports.SelectToDo = async (req, res) => {
   try {
     console.log('Fetching todos for User:', UserName); // Log UserName
@@ -146,4 +146,66 @@ exports.UpdateToDoStatus = async (req, res) => {
     });
   }
 };
+
+//remove todo
+exports.RemoveToDo = async (req, res) => {
+  try {
+    let id = req.body._id; // Get the ID of the todo to be removed
+
+    // Use deleteOne to remove the document by ID
+    let removeData = await TodoListModel.deleteOne({ _id: id });
+
+    // Check if the deletion was successful
+    if (removeData.deletedCount > 0) {
+      res.status(200).json({
+        status: "success",
+        message: "To-do item removed successfully" // Optional success message
+      });
+    } else {
+      res.status(404).json({
+        status: "fail",
+        message: "No to-do items found with the given ID"
+      });
+    }
+  } catch (err) {
+    console.error('Error in RemoveToDo:', err);
+    res.status(500).json({
+      status: "fail",
+      message: err.message
+    });
+  }
+};
+
+
+//SelectToDo for filter by status
+exports.FilterToDoByStatus = async (req, res) => {
+  try {
+
+    let UserName=req.body.UserName;
+    let ToDoStatus=req.body.ToDoStatus;
+    const data = await TodoModel.find(
+      { UserName: UserName},
+      {ToDoStatus:ToDoStatus}
+    );
+
+    if (data.length > 0) {
+      res.status(200).json({ 
+        status: "success",
+        data 
+      });
+    } else {
+      res.status(404).json({ 
+        status: "fail", 
+        message: "No to-do items found for this user" 
+      });
+    }
+  } catch (err) {
+    console.error('Error in SelectToDo:', err);
+    res.status(500).json({ 
+      status: "fail", 
+      message: err.message 
+    });
+  }
+};
+
 
