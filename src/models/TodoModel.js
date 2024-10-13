@@ -8,7 +8,7 @@ const DataSchema = mongoose.Schema(
     ToDoSubject: {
       type: String,
     },
-    ToDoDescription: {
+    TodDoDescription: {
       type: String,
     },
     ToDoStatus: {

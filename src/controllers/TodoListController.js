@@ -215,3 +215,44 @@ exports.FilterToDoByStatus = async (req, res) => {
     });
   }
 };
+
+
+//filter todo by date 
+
+
+exports.FilterToDoByDate = async (req, res) => {
+  const { date } = req.body; // Expecting a date in YYYY-MM-DD format
+
+  // Validate the date format (optional but recommended)
+  if (!date) {
+      return res.status(400).json({ message: "Date is required" });
+  }
+
+  // Convert the date to a valid range for querying
+  const startOfDay = new Date(date);
+  const endOfDay = new Date(date);
+  endOfDay.setHours(23, 59, 59, 999); // Set to the end of the day
+
+  try {
+     const filteredTodos = await TodoModel.find({
+        ToDoCreateDate: {
+          $gte: startOfDay,
+          $lte: endOfDay,
+        }
+     });
+  
+
+      // Check if any todos were found
+      if (filteredTodos.length === 0) {
+          return res.status(404).json({ message: "No todos found for the given date." });
+      }
+
+      res.json(filteredTodos);
+  } catch (error) {
+      console.error("Error fetching todos:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+
+

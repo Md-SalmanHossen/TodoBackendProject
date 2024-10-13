@@ -24,6 +24,7 @@ router.post('/UpdateToDoStatus',AuthVerifyMiddleware,TodoListController.UpdateTo
 router.post('/RemoveToDo',AuthVerifyMiddleware,TodoListController.RemoveToDo);
 
 router.post('/FilterToDoByStatus',AuthVerifyMiddleware,TodoListController.FilterToDoByStatus);
+router.post('/FilterToDoByDate',AuthVerifyMiddleware, TodoListController.FilterToDoByDate);
 
 
 module.exports = router;
