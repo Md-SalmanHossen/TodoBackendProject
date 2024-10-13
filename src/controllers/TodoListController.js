@@ -180,32 +180,38 @@ exports.RemoveToDo = async (req, res) => {
 //SelectToDo for filter by status
 exports.FilterToDoByStatus = async (req, res) => {
   try {
+    console.log('Request body:', req.body); // Log the entire request body
 
-    let UserName=req.body.UserName;
-    let ToDoStatus=req.body.ToDoStatus;
-    const data = await TodoModel.find(
-      { UserName: UserName},
-      {ToDoStatus:ToDoStatus}
-    );
+    let UserName = req.body.UserName;
+    let ToDoStatus = req.body.ToDoStatus;
+
+    console.log('UserName:', UserName); // Log extracted values
+    console.log('ToDoStatus:', ToDoStatus);
+
+    // Find todos for the specified user and status
+    const data = await TodoModel.find({
+      UserName: UserName,
+      ToDoStatus: ToDoStatus
+    });
+
+    console.log('Found data:', data); // Log the found data
 
     if (data.length > 0) {
-      res.status(200).json({ 
+      res.status(200).json({
         status: "success",
-        data 
+        data
       });
     } else {
-      res.status(404).json({ 
-        status: "fail", 
-        message: "No to-do items found for this user" 
+      res.status(404).json({
+        status: "fail",
+        message: "No to-do items found for this user with the specified status"
       });
     }
   } catch (err) {
-    console.error('Error in SelectToDo:', err);
-    res.status(500).json({ 
-      status: "fail", 
-      message: err.message 
+    console.error('Error in FilterToDoByStatus:', err);
+    res.status(500).json({
+      status: "fail",
+      message: err.message
     });
   }
 };
-
-
