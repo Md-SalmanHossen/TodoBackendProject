@@ -1,4 +1,3 @@
-The provided code snippet defines an Express router for handling routes related to user profiles and to-do lists in a Node.js application. Here’s a breakdown of each part of the code, including the role of controllers and middleware.
 
 ### Code Breakdown:
 
