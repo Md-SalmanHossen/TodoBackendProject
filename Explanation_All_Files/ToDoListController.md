@@ -1,4 +1,4 @@
-This file defines various functions to handle different actions related to managing a to-do list, like creating, reading, updating, and deleting to-do items using MongoDB. Let’s go through each part of the code in detail:
+
 
 ### 1. **Dependencies & Model Imports**
 ```javascript
@@ -271,5 +271,3 @@ exports.FilterToDoByDate = async (req, res) => {
 - **Response**: Returns items created on that date or an error message if no items are found.
 
 ---
-
-This code provides the server-side logic to manage to-do items in a Node.js and MongoDB-based application, including CRUD operations and filtering.
