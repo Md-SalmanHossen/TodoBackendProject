@@ -1,4 +1,4 @@
-The provided middleware handles JSON Web Token (JWT) verification and user authentication for an Express application. Here's a detailed explanation of each part of the code:
+The provided middleware handles JSON Web Token (JWT) verification and user authentication for an Express application. 
 
 ### Code Explanation:
 
